@@ -1,0 +1,37 @@
+This is an attempt to provide Guile bindings for the debbugs bug
+tracker.  Currently, only few RPCs are implemented: =get-status=,
+=newest-bugs=, and =get-bug-log=.
+
+#+BEGIN_SRC scheme
+(set! %load-path (cons "/home/rekado/dev/guile/guile-debbugs/" %load-path))
+,use (debbugs soap)
+,use (debbugs operations)
+(define %debian "http://bugs.debian.org/cgi-bin/soap.cgi")
+(soap-invoke %debian newest-bugs 3)
+=> (880882 880881 880880)
+(soap-invoke %debian get-status (list 880882 880881 880880))
+=> (#<bug 880882 ...> #<bug 880881 ...> #<bug 880880 ...>)
+#+END_SRC
+
+* Missing features
+
++ TLS support (required for GNU debbugs instance)
++ more RPCs
++ convenience procedures for =<bug>= records (e.g. =bug-done?=)
++ parsing of raw values (e.g. timestamps)
++ monadic interface
+
+* Hacking
+
+#+BEGIN_SRC bash
+guix environment --ad-hoc autoconf automake pkg-config guile@2.2
+./bootstrap.sh
+./configure
+make
+#+END_SRC
+
+* License
+
+Guile-Debbugs is released under the GNU General Public License version
+3 or, at your option, any later version.  You are welcome to using it
+in a web application under the Affero GPL version 3 or later.
