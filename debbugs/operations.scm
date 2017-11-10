@@ -23,6 +23,8 @@
   #:use-module (srfi srfi-1))
 
 (define-public (newest-bugs amount)
+  "Return a list of bug numbers corresponding to the newest AMOUNT
+bugs."
   (soap-request
    `(ns1:newest_bugs
      (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
@@ -32,6 +34,8 @@
      (map string->number ((sxpath '(// urn:Debbugs/SOAP:item *text*)) response-body)))))
 
 (define-public (get-status bug-ids)
+  "Return <bug> records containing the details for the bugs identified
+by BUG-IDS, a list of bug numbers."
   (soap-request
    `(ns1:get_status
      (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
@@ -49,6 +53,7 @@
        (map soap-bug->bug bugs)))))
 
 (define-public (get-bug-log bug-id)
+  "Return emails associated with the bug identified by BUG-ID."
   (soap-request
    `(ns1:get_bug_log
      (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
