@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+               xmlns:xsd="http://www.w3.org/1999/XMLSchema"
+               xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+  <soap:Body>
+    <newest_bugsResponse xmlns="urn:Debbugs/SOAP">
+      <soapenc:Array soapenc:arrayType="xsd:int[3]" xsi:type="soapenc:Array">
+        <item xsi:type="xsd:int">881351</item>
+        <item xsi:type="xsd:int">881352</item>
+        <item xsi:type="xsd:int">881353</item>
+      </soapenc:Array>
+    </newest_bugsResponse>
+  </soap:Body>
+</soap:Envelope>

@@ -23,3 +23,17 @@ SOURCES =                 \
   debbugs/operations.scm  \
   debbugs/soap.scm        \
   debbugs/bug.scm
+
+TEST_EXTENSIONS = .scm
+
+SCM_TESTS = \
+  tests/operations.scm
+
+TESTS = $(SCM_TESTS)
+
+SCM_LOG_DRIVER =							\
+  $(top_builddir)/env						\
+  $(GUILE) --no-auto-compile -e main		\
+      $(top_srcdir)/build-aux/test-driver.scm
+
+AM_SCM_LOG_DRIVER_FLAGS = --brief=yes
