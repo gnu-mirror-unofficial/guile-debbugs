@@ -26,6 +26,10 @@
   #:use-module (srfi srfi-9)
   #:use-module (srfi srfi-26)
   #:export (soap-request
+            soap-request?
+            soap-request-body
+            soap-request-callback
+
             soap-invoke
             soap->scheme))
 
