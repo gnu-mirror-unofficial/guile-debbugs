@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+               xmlns:apachens="http://xml.apache.org/xml-soap"
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+               xmlns:xsd="http://www.w3.org/1999/XMLSchema"
+               xmlns:xsi="http://www.w3.org/1999/XMLSchema-instance">
+  <soap:Body>
+    <get_statusResponse xmlns="urn:Debbugs/SOAP">
+      <s-gensym3 xsi:type="apachens:Map">
+        <item>
+          <key xsi:type="xsd:int">881352</key>
+          <value>
+            <unarchived xsi:type="xsd:string" />
+            <affects xsi:type="xsd:string" />
+            <package xsi:type="xsd:string">udisks2</package>
+            <tags xsi:type="xsd:string" />
+            <keywords xsi:type="xsd:string" />
+            <mergedwith xsi:type="xsd:string" />
+            <outlook xsi:type="xsd:string" />
+            <severity xsi:type="xsd:string">critical</severity>
+            <bug_num xsi:type="xsd:int">881352</bug_num>
+            <location xsi:type="xsd:string">db-h</location>
+            <pending xsi:type="xsd:string">pending</pending>
+            <done xsi:type="xsd:string" />
+            <found xsi:type="apachens:Map">
+              <item>
+                <key xsi:type="xsd:string">udisks2/2.7.4-1</key>
+                <value xsi:type="xsd:string" />
+              </item>
+            </found>
+            <archived xsi:type="xsd:int">0</archived>
+            <fixed_date soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <msgid xsi:type="xsd:string">&lt;CAA2p8qL7_iWtnv_DzTnr+Gk4VwBVO4B9Yn0fF7yN8BP85a_AQg@mail.gmail.com&gt;</msgid>
+            <last_modified xsi:type="xsd:int">1510333025</last_modified>
+            <fixed_versions soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <found_date soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <fixed />
+            <blockedby xsi:type="xsd:string" />
+            <subject xsi:type="xsd:string">udisks2: Breaks installation with kernel panic</subject>
+            <id xsi:type="xsd:int">881352</id>
+            <summary xsi:type="xsd:string" />
+            <log_modified xsi:type="xsd:int">1510333025</log_modified>
+            <found_versions soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array">
+              <item xsi:type="xsd:string">udisks2/2.7.4-1</item>
+            </found_versions>
+            <date xsi:type="xsd:int">1510333022</date>
+            <forwarded xsi:type="xsd:string" />
+            <owner xsi:type="xsd:string" />
+            <originator xsi:type="xsd:base64Binary">QW5kcsOpIEVzdGV2ZXMgPGFpZmVzdGV2ZXNAZ21haWwuY29tPg==</originator>
+            <source xsi:type="xsd:string">udisks2</source>
+            <blocks xsi:type="xsd:string" />
+          </value>
+        </item>
+        <item>
+          <key xsi:type="xsd:int">881353</key>
+          <value>
+            <log_modified xsi:type="xsd:int">1510333743</log_modified>
+            <blockedby xsi:type="xsd:string" />
+            <id xsi:type="xsd:int">881353</id>
+            <subject xsi:type="xsd:string">smb.conf: client max protocol = default limits connections to SMB1</subject>
+            <summary xsi:type="xsd:string" />
+            <found_date soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <fixed />
+            <last_modified xsi:type="xsd:int">1510333743</last_modified>
+            <fixed_versions soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <source xsi:type="xsd:string">samba</source>
+            <blocks xsi:type="xsd:string" />
+            <owner xsi:type="xsd:string" />
+            <originator xsi:type="xsd:string">wolfgang &lt;rnd83@safearea.eu&gt;</originator>
+            <found_versions soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array">
+              <item xsi:type="xsd:string">samba/2:4.5.12+dfsg-2</item>
+            </found_versions>
+            <date xsi:type="xsd:int">1510333741</date>
+            <forwarded xsi:type="xsd:string" />
+            <keywords xsi:type="xsd:string" />
+            <mergedwith xsi:type="xsd:string" />
+            <affects xsi:type="xsd:string" />
+            <package xsi:type="xsd:string">samba-common</package>
+            <tags xsi:type="xsd:string" />
+            <unarchived xsi:type="xsd:string" />
+            <fixed_date soapenc:arrayType="xsd:ur-type[0]" xsi:type="soapenc:Array" />
+            <msgid xsi:type="xsd:string">&lt;151033356604.2622.17810452636805039427.reportbug@aerocool&gt;</msgid>
+            <found xsi:type="apachens:Map">
+              <item>
+                <key xsi:type="xsd:string">samba/2:4.5.12+dfsg-2</key>
+                <value xsi:type="xsd:string" />
+              </item>
+            </found>
+            <done xsi:type="xsd:string" />
+            <archived xsi:type="xsd:int">0</archived>
+            <location xsi:type="xsd:string">db-h</location>
+            <pending xsi:type="xsd:string">pending</pending>
+            <outlook xsi:type="xsd:string" />
+            <severity xsi:type="xsd:string">normal</severity>
+            <bug_num xsi:type="xsd:int">881353</bug_num>
+          </value>
+        </item>
+      </s-gensym3>
+    </get_statusResponse>
+  </soap:Body>
+</soap:Envelope>

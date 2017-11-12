@@ -24,6 +24,7 @@
   #:use-module ((sxml xpath) #:hide (filter))
   #:use-module (debbugs soap)
   #:export (bug
+            bug?
 
             bug-package bug-severity bug-num bug-subject bug-summary bug-msgid
             bug-originator bug-owner

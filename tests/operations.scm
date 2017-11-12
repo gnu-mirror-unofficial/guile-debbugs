@@ -19,6 +19,8 @@
 (define-module (test-operations)
   #:use-module (debbugs operations)
   #:use-module (debbugs soap)
+  #:use-module (debbugs bug)
+  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-64)
   #:use-module (ice-9 rdelim)
   #:use-module (sxml simple))
@@ -30,6 +32,7 @@
                                        "/tests/" name)
     read-string))
 
+
 (test-assert "newest-bugs generates soap request"
   (soap-request? (newest-bugs 2)))
 
@@ -43,5 +46,17 @@
   ((soap-request-callback (newest-bugs 3))
    (xml->sxml (asset "responses/newest-bugs1.xml")))
   (list 881351 881352 881353))
+
+
+(test-equal "get-status generates soap request XML"
+  (string-trim-both (asset "requests/get-status.xml"))
+  (with-output-to-string
+    (lambda _ (sxml->xml (soap-request-body (get-status (list 1 2 3)))))))
+
+(test-assert "get-status parses response as bugs"
+  (every bug?
+         ((soap-request-callback (get-status (list 1 2 3)))
+          (xml->sxml (asset "responses/get-status1.xml")
+                     #:trim-whitespace? #t))))
 
 (test-end "operations")
