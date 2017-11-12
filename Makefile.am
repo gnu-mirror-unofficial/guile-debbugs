@@ -32,6 +32,14 @@ SCM_TESTS = \
 
 TESTS = $(SCM_TESTS)
 
+EXTRA_DIST += \
+  env.in									\
+  tests/responses/newest-bugs1.xml			\
+  tests/responses/get-status1.xml			\
+  tests/requests/get-status.xml				\
+  tests/requests/newest-bugs.xml			\
+  tests/requests/get-bugs.xml
+
 SCM_LOG_DRIVER =							\
   $(top_builddir)/env						\
   $(GUILE) --no-auto-compile -e main		\
