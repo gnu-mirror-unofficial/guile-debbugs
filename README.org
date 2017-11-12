@@ -1,6 +1,5 @@
 This is an attempt to provide Guile bindings for the debbugs bug
-tracker.  Currently, only few RPCs are implemented: =get-status=,
-=newest-bugs=, and =get-bug-log=.
+tracker.
 
 #+BEGIN_SRC scheme
 (set! %load-path (cons "/home/rekado/dev/guile/guile-debbugs/" %load-path))

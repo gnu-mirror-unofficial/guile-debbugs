@@ -20,7 +20,8 @@
   #:use-module (debbugs soap)
   #:use-module (debbugs bug)
   #:use-module (sxml xpath)
-  #:use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1)
+  #:use-module (ice-9 match))
 
 (define-public (newest-bugs amount)
   "Return a list of bug numbers corresponding to the newest AMOUNT
@@ -51,6 +52,27 @@ by BUG-IDS, a list of bug numbers."
                                urn:Debbugs/SOAP:s-gensym3
                                urn:Debbugs/SOAP:item)) response-body)))
        (map soap-bug->bug bugs)))))
+
+(define-public (get-bugs args)
+  "Returns bug numbers for bugs that match the conditions given by
+ARGS, an alist of key-value pairs.  Possible keys: package, submitter,
+maint, src, severity, status (which can be 'done', 'forwarded',
+'open'), tag, owner, bugs, affects, archive (which can be 'both', or a
+Boolean value)."
+  (soap-request
+   `(ns1:get_bugs
+     (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
+        (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
+     (ns1:query
+      (@ (xsi:type "soapenc:Array")
+         (soapenc:arrayType ,(string-append "xsd:anyType[" (number->string (* 2 (length args))) "]")))
+      ,@(map (match-lambda
+               ((key . value)
+                `((ns1:query (@ (xsi:type "xsd:string")) ,key)
+                  (ns1:query (@ (xsi:type "xsd:string")) ,value))))
+             args)))
+   (lambda (response-body)
+     (map string->number ((sxpath '(// urn:Debbugs/SOAP:item *text*)) response-body)))))
 
 (define-public (get-bug-log bug-id)
   "Return emails associated with the bug identified by BUG-ID."
