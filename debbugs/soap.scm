@@ -100,7 +100,7 @@ response body."
                      (content-length . ,(string-length req-xml)))
                    #:decode-body? #t)
       ((soap-request-callback request)
-       (xml->sxml body)))))
+       (xml->sxml body #:trim-whitespace? #t)))))
 
 (define* (soap->scheme sxml #:optional (plain #f))
   "Convert a SOAP sxml expression for a named value to a Scheme value.
