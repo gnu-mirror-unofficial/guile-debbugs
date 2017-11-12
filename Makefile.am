@@ -19,9 +19,10 @@ include guile.am
 moddir=$(prefix)/share/guile/site/@GUILE_EFFECTIVE_VERSION@
 godir=$(libdir)/guile/@GUILE_EFFECTIVE_VERSION@/ccache
 
-SOURCES =                 \
-  debbugs/operations.scm  \
-  debbugs/soap.scm        \
+SOURCES =									\
+  debbugs/config.scm						\
+  debbugs/operations.scm 					\
+  debbugs/soap.scm							\
   debbugs/bug.scm
 
 TEST_EXTENSIONS = .scm
