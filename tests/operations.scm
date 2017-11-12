@@ -59,4 +59,13 @@
           (xml->sxml (asset "responses/get-status1.xml")
                      #:trim-whitespace? #t))))
 
+
+(test-equal "get-bugs generates soap request XML"
+  (string-trim-both (asset "requests/get-bugs.xml"))
+  (with-output-to-string
+    (lambda _
+      (sxml->xml
+       (soap-request-body (get-bugs '(("package" . "guix-patches")
+                                      ("package" . "guix"))))))))
+
 (test-end "operations")
