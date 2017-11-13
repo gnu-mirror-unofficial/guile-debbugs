@@ -17,11 +17,13 @@
 ;;; along with Guile-Debbugs.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (debbugs soap)
+  #:use-module (debbugs base64)
   #:use-module (sxml simple)
   #:use-module (sxml xpath)
   #:use-module (web client)
   #:use-module (ice-9 match)
   #:use-module (ice-9 receive)
+  #:use-module (ice-9 iconv)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:use-module (srfi srfi-26)
@@ -110,6 +112,8 @@ name and the value."
   ;; to use sxpath instead.
   (let* ((converter (match ((sxpath '(@ http://www.w3.org/1999/XMLSchema-instance:type *text*)) sxml)
                       (("xsd:string") identity)
+                      (("xsd:base64Binary")
+                       (compose (cut bytevector->string <> "UTF-8") base64-decode))
                       (("xsd:int") string->number)
                       (("soapenc:Array") (cut soap->scheme <> #t))
                       (("apachens:Map")

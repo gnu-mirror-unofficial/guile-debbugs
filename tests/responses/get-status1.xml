@@ -47,7 +47,7 @@
             <date xsi:type="xsd:int">1510333022</date>
             <forwarded xsi:type="xsd:string" />
             <owner xsi:type="xsd:string" />
-            <originator xsi:type="xsd:base64Binary">QW5kcsOpIEVzdGV2ZXMgPGFpZmVzdGV2ZXNAZ21haWwuY29tPg==</originator>
+            <originator xsi:type="xsd:base64Binary">SMOpbGxvIFfDtnJsZCA8w7xtYWlsQGduw7wub3JnPg==</originator>
             <source xsi:type="xsd:string">udisks2</source>
             <blocks xsi:type="xsd:string" />
           </value>
@@ -67,7 +67,7 @@
             <source xsi:type="xsd:string">samba</source>
             <blocks xsi:type="xsd:string" />
             <owner xsi:type="xsd:string" />
-            <originator xsi:type="xsd:string">wolfgang &lt;rnd83@safearea.eu&gt;</originator>
+            <originator xsi:type="xsd:string">test &lt;test@gnu.org&gt;</originator>
             <found_versions soapenc:arrayType="xsd:string[1]" xsi:type="soapenc:Array">
               <item xsi:type="xsd:string">samba/2:4.5.12+dfsg-2</item>
             </found_versions>

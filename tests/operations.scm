@@ -59,6 +59,13 @@
           (xml->sxml (asset "responses/get-status1.xml")
                      #:trim-whitespace? #t))))
 
+(test-equal "get-status parses base64 fields"
+  (map bug-originator ((soap-request-callback (get-status (list 1 2 3)))
+                       (xml->sxml (asset "responses/get-status1.xml")
+                                  #:trim-whitespace? #t)))
+  '("Héllo Wörld <ümail@gnü.org>" "test <test@gnu.org>"))
+
+
 
 (test-equal "get-bugs generates soap request XML"
   (string-trim-both (asset "requests/get-bugs.xml"))
