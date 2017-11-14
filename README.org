@@ -15,7 +15,6 @@ tracker.
 * Missing features
 
 + TLS support (required for GNU debbugs instance)
-+ more RPCs
 + convenience procedures for =<bug>= records (e.g. =bug-done?=)
 + parsing of raw values (e.g. timestamps)
 + monadic interface

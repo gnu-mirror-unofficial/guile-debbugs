@@ -20,6 +20,7 @@
   #:use-module (debbugs soap)
   #:use-module (debbugs bug)
   #:use-module (sxml xpath)
+  #:use-module (sxml match)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 match))
 
@@ -88,3 +89,32 @@ Boolean value)."
                                  urn:Debbugs/SOAP:item)) response-body)))
        ;; TODO: parse into record
        emails))))
+
+(define-public (get-usertag email)
+  "Return an association list of tag names to lists of bug numbers for
+all bugs that have been tagged by EMAIL."
+  (soap-request
+   `(ns1:get_usertag
+     (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
+        (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
+     (ns1:user
+      (@ (xsi:type "xsd:string")) ,email))
+   (lambda (response-body)
+     (let ((response ((sxpath '(// urn:Debbugs/SOAP:get_usertagResponse *)) response-body)))
+       ;; The problem here is that for some usertags (e.g. usertags
+       ;; for "hertzog@debian.org") a map is returned (so I could use
+       ;; soap->scheme), but in other cases (e.g. usertags for
+       ;; "aj@azure.humbug.org.au") each tag is an array with bug-num
+       ;; items.
+       (sxml-match (car response)
+        ((urn:Debbugs/SOAP:s-gensym3 (@ (http://www.w3.org/1999/XMLSchema-instance:type "apachens:Map")) ,items ...)
+         (map car (soap->scheme (car response) #t)))
+        ((urn:Debbugs/SOAP:s-gensym3 ,tags ...)
+         (map (lambda (tag)
+                ;; For consistency make sure that the keys are strings.
+                (let ((pair (soap->scheme tag)))
+                  (if (symbol? (car pair))
+                      (cons (symbol->string (car pair))
+                            (cdr pair))
+                      pair)))
+              tags)))))))
