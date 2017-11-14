@@ -22,7 +22,7 @@ tracker.
 * Hacking
 
 #+BEGIN_SRC bash
-guix environment --ad-hoc autoconf automake pkg-config guile@2.2
+guix environment --ad-hoc autoconf automake texinfo pkg-config guile@2.2
 ./bootstrap.sh
 ./configure
 make

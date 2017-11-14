@@ -1,0 +1,113 @@
+\input texinfo
+@c -*-texinfo-*-
+
+@c %**start of header
+@setfilename guile-debbugs.info
+@documentencoding UTF-8
+@settitle Guile Debbugs Reference Manual
+@c %**end of header
+
+@include version.texi
+
+@copying
+Copyright @copyright{} 2017 Ricardo Wurmus@*
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.  A
+copy of the license is included in the section entitled ``GNU Free
+Documentation License''.
+@end copying
+
+@dircategory The Algorithmic Language Scheme
+@direntry
+* Guile-Debbugs: (guile-debbugs).      Guile bindings to Debbugs.
+@end direntry
+
+@titlepage
+@title Guile Debbugs Reference Manual
+@subtitle Accessing the Debbugs bug tracker with Guile
+@author Ricardo Wurmus
+
+@page
+@vskip 0pt plus 1filll
+Edition @value{EDITION} @*
+@value{UPDATED} @*
+
+@insertcopying
+@end titlepage
+
+@contents
+
+@c *********************************************************************
+@node Top
+@top Guile Debbugs
+
+This document describes Guile Debbugs version @value{VERSION}, the Guile
+bindings for the Debbugs bug tracker's SOAP service.
+
+@menu
+* Introduction::                What is this all about?
+* Installation::                Installing Guile-Debbugs.
+* Programming Interface::       Using Guile-Debbugs in Scheme.
+
+* Acknowledgments::             Thanks!
+* GNU Free Documentation License::  The license of this manual.
+* Concept Index::               Concepts.
+* Programming Index::           Data types, functions, and variables.
+@end menu
+
+@c *********************************************************************
+@node Introduction
+@chapter Introduction
+
+TODO
+
+@c *********************************************************************
+@node Installation
+@chapter Installation
+
+TODO
+
+@c *********************************************************************
+@node Programming Interface
+@chapter Programming Interface
+
+TODO
+
+@c *********************************************************************
+@node Acknowledgments
+@chapter Acknowledgments
+
+Thanks to the following people who contributed to Guile-Debbugs through
+bug reports or patches:
+
+@itemize @bullet
+@item Your Name Here @email{nobody@@yet}
+@end itemize
+
+
+Thank you.
+
+@c *********************************************************************
+@node GNU Free Documentation License
+@appendix GNU Free Documentation License
+
+@include fdl-1.3.texi
+
+@page
+
+@c *********************************************************************
+@node Concept Index
+@unnumbered Concept Index
+
+@printindex cp
+
+@node Programming Index
+@unnumbered Programming Index
+@syncodeindex tp fn
+@syncodeindex vr fn
+@printindex fn
+
+@bye

@@ -51,3 +51,9 @@ SCM_LOG_DRIVER =							\
       $(top_srcdir)/build-aux/test-driver.scm
 
 AM_SCM_LOG_DRIVER_FLAGS = --brief=yes
+
+info_TEXINFOS = doc/guile-debbugs.texi
+
+EXTRA_DIST +=								\
+  doc/fdl-1.3.texi
+

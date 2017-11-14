@@ -9,3 +9,7 @@ env
 tests/*.log
 tests/*.trs
 test-suite.log
+/doc/version.texi
+*.info
+.dirstamp
+stamp-vti
