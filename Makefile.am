@@ -33,13 +33,17 @@ SCM_TESTS = \
 
 TESTS = $(SCM_TESTS)
 
+AM_TESTS_ENVIRONMENT = abs_top_srcdir="$(abs_top_srcdir)" GUILE_AUTO_COMPILE=0
+
 EXTRA_DIST += \
   env.in									\
   tests/responses/newest-bugs1.xml			\
   tests/responses/get-status1.xml			\
   tests/requests/get-status.xml				\
   tests/requests/newest-bugs.xml			\
-  tests/requests/get-bugs.xml
+  tests/requests/get-bugs.xml				\
+  build-aux/test-driver.scm					\
+  $(SCM_TESTS)
 
 SCM_LOG_DRIVER =							\
   $(top_builddir)/env						\

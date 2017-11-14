@@ -28,7 +28,7 @@
 (test-begin "operations")
 
 (define (asset name)
-  (with-input-from-file (string-append (getenv "srcdir")
+  (with-input-from-file (string-append (getenv "abs_top_srcdir")
                                        "/tests/" name)
     read-string))
 
