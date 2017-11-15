@@ -21,10 +21,11 @@ godir=$(libdir)/guile/@GUILE_EFFECTIVE_VERSION@/ccache
 
 SOURCES =									\
   debbugs/base64.scm						\
+  debbugs/bug.scm							\
   debbugs/config.scm						\
+  debbugs/email.scm							\
   debbugs/operations.scm 					\
-  debbugs/soap.scm							\
-  debbugs/bug.scm
+  debbugs/soap.scm
 
 TEST_EXTENSIONS = .scm
 

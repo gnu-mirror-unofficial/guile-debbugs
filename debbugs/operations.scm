@@ -19,6 +19,7 @@
 (define-module (debbugs operations)
   #:use-module (debbugs soap)
   #:use-module (debbugs bug)
+  #:use-module (debbugs email)
   #:use-module (sxml xpath)
   #:use-module (sxml match)
   #:use-module (srfi srfi-1)
@@ -87,8 +88,7 @@ Boolean value)."
      (let ((emails ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
                                  http://schemas.xmlsoap.org/soap/encoding/:Array
                                  urn:Debbugs/SOAP:item)) response-body)))
-       ;; TODO: parse into record
-       emails))))
+       (map soap-email->email emails)))))
 
 (define-public (get-usertag email)
   "Return an association list of tag names to lists of bug numbers for
