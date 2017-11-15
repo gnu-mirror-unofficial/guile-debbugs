@@ -74,7 +74,8 @@
   (callback soap-request-callback))
 
 (define* (soap-request body #:optional (callback identity))
-  "Wrap BODY in a SOAP envelope."
+  "Return a <soap-request> consisting of the BODY in a SOAP envelope
+and an optional CALLBACK procedure for handling a response."
   (make-soap-request
    `(soap:Envelope
      (@ (xmlns:soap            . "http://schemas.xmlsoap.org/soap/envelope/")
