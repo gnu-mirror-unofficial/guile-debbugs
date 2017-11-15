@@ -20,6 +20,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:use-module (srfi srfi-9 gnu)
+  #:use-module (srfi srfi-19)
   #:use-module (ice-9 match)
   #:use-module ((sxml xpath) #:hide (filter))
   #:use-module (debbugs soap)
@@ -113,6 +114,19 @@
   (let ((bug-properties
          (map soap->scheme ((sxpath '(urn:Debbugs/SOAP:value *any*)) bug-item))))
     (apply bug (append-map (match-lambda
+                             ;; timestamps
+                             ((and ((or 'date 'log-modified 'last-modified) . _)
+                                   (key . value))
+                              (list (symbol->keyword key)
+                                    (time-utc->date (make-time time-utc 0 value))))
+                             ;; booleans
+                             ((and ((or 'archived 'unarchived) . _)
+                                   (key . value))
+                              (list (symbol->keyword key)
+                                    (if (number? value)
+                                        ((negate zero?) value)
+                                        #f)))
+                             ;; anything else
                              ((key . value)
                               (list (symbol->keyword key) value)))
                            (filter (match-lambda
