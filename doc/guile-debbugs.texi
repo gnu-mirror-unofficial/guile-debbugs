@@ -74,6 +74,73 @@ TODO
 @node Programming Interface
 @chapter Programming Interface
 
+Guile Debbugs provides rudimentary procedures to make requests to a SOAP
+service, and it defines operations that can be invoked on it.  It does
+not provide a full implementation of SOAP and it has only been tested
+with Debbugs.
+
+@menu
+* SOAP helpers::           Procedures for talking with SOAP services.
+* Operations::             Debbugs SOAP operations.
+@end menu
+
+@node SOAP helpers
+@section SOAP helpers
+
+@cindex (debbugs soap), module
+The module @code{(debbugs soap)} provides procedures to invoke
+operations on a SOAP service, to retrieve responses, and to convert
+those responses to Scheme values.
+
+@cindex soap-request, constructor
+@deffn {Scheme Procedure} soap-request @var{body} [@var{callback}]
+Return a @code{<soap-request>}, which combines a SOAP request envelope
+enclosing the SXML expression @var{body} and the single-argument
+response handler procedure @var{callback}.  The response handler is to
+be called on the SOAP response SXML.  When no handler is provided the
+response expression is not processed.
+@end deffn
+
+@cindex soap-request?, predicate
+@deffn {Scheme Procedure} soap-request? @var{record}
+Return @code{#t} when @var{record} is a @code{<soap-request>} object.
+@end deffn
+
+@cindex soap-request-body, accessor
+@deffn {Scheme Procedure} soap-request-body @var{request}
+Return the SXML @code{body} of the SOAP request @var{request}, a
+@code{<soap-request>} object.
+@end deffn
+
+@cindex soap-request-callback, accessor
+@deffn {Scheme Procedure} soap-request-callback @var{request}
+Return the response handler procedure @code{callback} of the SOAP
+request @var{request}, a @code{<soap-request>} object.
+@end deffn
+
+@cindex make a SOAP request
+@cindex invoke SOAP operation
+@cindex send a request to a SOAP service
+@cindex soap-invoke, procedure
+@deffn {Scheme Procedure} soap-invoke @var{uri} @var{op} [@var{args} @dots{}]
+Invoke the SOAP operation @var{op}, a @code{<soap-request>} object, with
+all provided arguments @var{args} on the SOAP service at the provided
+URI @var{uri}.  Return the response body after processing it with the
+handler procedure that is part of @var{op}.
+@end deffn
+
+@cindex convert XML response to Scheme
+@cindex soap->scheme, procedure
+@deffn {Scheme Procedure} soap->scheme @var{sxml} [@var{plain}]
+Recursively convert a SOAP SXML expression @var{sxml} for a named value
+to a Scheme value.  If @var{plain} is @var{#t} return only the value,
+otherwise return a pair of a name and the value.
+@end deffn
+
+
+@node Operations
+@section Operations
+
 TODO
 
 @c *********************************************************************
