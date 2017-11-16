@@ -30,8 +30,9 @@ SOURCES =									\
 
 TEST_EXTENSIONS = .scm
 
-SCM_TESTS = \
-  tests/operations.scm
+SCM_TESTS =									\
+  tests/operations.scm						\
+  tests/rfc822.scm
 
 TESTS = $(SCM_TESTS)
 
