@@ -23,9 +23,10 @@
   #:use-module (srfi srfi-19)
   #:use-module (ice-9 match)
   #:use-module (debbugs soap)
+  #:use-module (debbugs rfc822)
   #:export (email
             email?
-            email-header
+            email-headers
             email-body
             email-msg-num
             email-attachments
@@ -33,9 +34,9 @@
             soap-email->email))
 
 (define-record-type <email>
-  (make-email header body msg-num attachments)
+  (make-email headers body msg-num attachments)
   email?
-  (header       email-header)
+  (headers      email-headers)
   (body         email-body)
   (msg-num      email-msg-num)
   (attachments  email-attachments))
@@ -46,13 +47,13 @@
                    (email-msg-num record)
                    (number->string (object-address record) 16))))
 
-(define (parse-header header-text)
+(define (parse-headers header-text)
   "Parse the email headers and return them as an alist."
-  ;; TODO
-  header-text)
+  (with-input-from-string header-text
+    (lambda () (rfc822-header->list (current-input-port)))))
 
 (define* (email #:key header body msg-num (attachments '()))
-  (make-email (parse-header header) body msg-num attachments))
+  (make-email (parse-headers header) body msg-num attachments))
 
 (define (soap-email->email email-item)
   (let ((email-properties (map soap->scheme (cdr email-item))))
