@@ -118,6 +118,32 @@ service, and it defines operations that can be invoked on it.  It does
 not provide a full implementation of SOAP and it has only been tested
 with Debbugs.
 
+The following modules are included:
+
+@table @code
+@item (debbugs base64)
+Procedures for decoding and encoding base64 strings.
+
+@item (debbugs bug)
+Procedures to parse bugs as returned by Debbugs, and to access their
+properties.
+
+@item (debbugs email)
+Procedures to parse emails as returned by Debbugs.
+
+@item (debbugs operations)
+Implementations of SOAP operations supported by Debbugs.
+
+@item (debbugs rfc822)
+Parser for email headers.
+
+@item (debbugs soap)
+Procedures for talking with SOAP services.
+@end table
+
+The modules @code{(debbugs rfc822)} and @code{(debbugs base64)} won't be
+documented here as they are primarily for internal use.
+
 @menu
 * SOAP helpers::           Procedures for talking with SOAP services.
 * Operations::             Debbugs SOAP operations.
