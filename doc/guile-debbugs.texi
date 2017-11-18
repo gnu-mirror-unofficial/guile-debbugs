@@ -62,7 +62,35 @@ bindings for the Debbugs bug tracker's SOAP service.
 @node Introduction
 @chapter Introduction
 
-TODO
+This package provides a Guile library to communicate with a Debbugs bug
+tracker's SOAP service.
+
+Here is a short Guile REPL session demonstrating some of the things you
+can do with this library:
+
+@cindex example, REPL session
+@lisp
+(set! %load-path (cons "/path/to/guile-debbugs/" %load-path))
+,use (debbugs soap)
+,use (debbugs operations)
+,use (debbugs bugs)
+,use (debbugs email)
+(define %debian "http://bugs.debian.org/cgi-bin/soap.cgi")
+(define %gnu "https://debbugs.gnu.org/cgi/soap.cgi")
+(soap-invoke %debian newest-bugs 3)
+$1 = (880882 880881 880880)
+(soap-invoke %debian get-status $1)
+$2 = (#<bug 880882 ...> #<bug 880881 ...> #<bug 880880 ...>)
+(map bug-originator $2)
+$3 = ("ringo" "paul" "george")
+(soap-invoke %debian get-bug-log (car $1))
+$4 = (#<email 1 ...> #<email 2 ...> #<email 3 ...>)
+(email-body (car $4))
+$5 = "Hello world! ..."
+@end lisp
+
+For documentation of the supported operations @xref{Operations}.
+
 
 @c *********************************************************************
 @node Installation
