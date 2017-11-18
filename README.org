@@ -1,16 +1,6 @@
 This is an attempt to provide Guile bindings for the debbugs bug
-tracker.
-
-#+BEGIN_SRC scheme
-(set! %load-path (cons "/home/rekado/dev/guile/guile-debbugs/" %load-path))
-,use (debbugs soap)
-,use (debbugs operations)
-(define %debian "http://bugs.debian.org/cgi-bin/soap.cgi")
-(soap-invoke %debian newest-bugs 3)
-=> (880882 880881 880880)
-(soap-invoke %debian get-status (list 880882 880881 880880))
-=> (#<bug 880882 ...> #<bug 880881 ...> #<bug 880880 ...>)
-#+END_SRC
+tracker.  See the Info manual (=doc/guile-debbugs.info=) for examples
+and documentation.  (You will have to build it first.)
 
 * Missing features
 
