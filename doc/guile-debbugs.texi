@@ -68,7 +68,18 @@ TODO
 @node Installation
 @chapter Installation
 
-TODO
+Guile Debbugs uses the GNU build system.  To install Guile Debbugs from
+a release tarball just unpack it and run the usual commands:
+
+@example
+./configure
+make
+make install
+@end example
+
+If you want to build the sources from the source repository you need to
+bootstrap the build system first.  Run the @code{bootstrap.sh} script
+first and then perform the above steps.
 
 @c *********************************************************************
 @node Programming Interface
