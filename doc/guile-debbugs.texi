@@ -147,6 +147,8 @@ documented here as they are primarily for internal use.
 @menu
 * SOAP helpers::           Procedures for talking with SOAP services.
 * Operations::             Debbugs SOAP operations.
+* Bug helpers::            Procedures for parsing bugs and accessing their properties.
+* Email helpers::          Procedures for parsing emails and accessing their properties.
 @end menu
 
 @node SOAP helpers
@@ -206,6 +208,19 @@ otherwise return a pair of a name and the value.
 @node Operations
 @section Operations
 
+@cindex (debbugs operations), module
+TODO
+
+@node Bug helpers
+@section Bug helpers
+
+@cindex (debbugs bug), module
+TODO
+
+@node Email helpers
+@section Email helpers
+
+@cindex (debbugs email), module
 TODO
 
 @c *********************************************************************
