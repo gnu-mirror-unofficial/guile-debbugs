@@ -151,6 +151,7 @@ documented here as they are primarily for internal use.
 * Email helpers::          Procedures for parsing emails and accessing their properties.
 @end menu
 
+@c *********************************************************************
 @node SOAP helpers
 @section SOAP helpers
 
@@ -204,19 +205,68 @@ to a Scheme value.  If @var{plain} is @var{#t} return only the value,
 otherwise return a pair of a name and the value.
 @end deffn
 
-
+@c *********************************************************************
 @node Operations
 @section Operations
 
 @cindex (debbugs operations), module
-TODO
+This module implements SOAP operations that can be used with a Debbugs
+SOAP service.  Each of the procedures in this module returns a
+@code{<soap-request>} value, i.e. a message in SXML format and an
+optional response handler procedure.
 
+@cindex newest-bugs, operation
+@deffn {Scheme Procedure} newest-bugs @var{amount}
+This operation returns the identifiers of the newest bugs as a list of
+numbers.  The integer @var{amount} must be specified to limit the number
+of bugs returned by Debbugs.
+@end deffn
+
+@cindex get-status, operation
+@deffn {Scheme Procedure} get-status @var{bug-ids}
+This operation returns @code{<bug>} records containing the details for
+the bugs identified by @var{bug-ids}, a list of bug numbers.  @xref{Bug
+helpers} for procedures that can be used on the return values.
+@end deffn
+
+@cindex get-bugs, operation
+@deffn {Scheme Procedure} get-bugs @var{args}
+This operation returns bug numbers for bugs that match the conditions
+given by @var{args}, an alist of key-value pairs.  Possible keys are
+@code{package}, @code{submitter}, @code{maint}, @code{src},
+@code{severity}, @code{status}, @code{tag}, @code{owner}, @code{bugs},
+@code{affects}, and @code{archive}.
+
+All keys and values must be provided as strings.  Valid values for
+@code{status} are the strings @code{done}, @code{forwarded}, and
+@code{open}.  For @code{archive} the valid values are either the string
+@code{both}, the string @code{1} (meaning ``archived''), or the string
+@code{0} (meaning ``not archived'').
+@end deffn
+
+@cindex get-bug-log, operation
+@deffn {Scheme Procedure} get-bug-log @var{bug-id}
+This operation requests all emails associated with the bug identified by
+@var{bug-id}.  All emails are returned as @code{<email>} values.
+@xref{Email helpers} for procedures that can be used on the return
+values.
+@end deffn
+
+@cindex get-usertag, operation
+@deffn {Scheme Procedure} get-usertag @var{email}
+This operation returns an association list of tag names (as strings) to
+lists of bug numbers for all bugs that have been tagged by @var{email},
+a string holding an email address.
+@end deffn
+
+@c *********************************************************************
 @node Bug helpers
 @section Bug helpers
 
 @cindex (debbugs bug), module
 TODO
 
+@c *********************************************************************
 @node Email helpers
 @section Email helpers
 
