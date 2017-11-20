@@ -1,0 +1,11 @@
+--2017-11-20 18:25:45--  https://raw.githubusercontent.com/ContributorCovenant/contributor_covenant/master/LICENSE.md
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.112.133
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.112.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 4806 (4.7K) [text/plain]
+Saving to: ‘LICENSE.md’
+
+     0K ....                                                  100% 6.08M=0.001s
+
+2017-11-20 18:25:45 (6.08 MB/s) - ‘LICENSE.md’ saved [15606]
+

@@ -1,3 +1,16 @@
+Copyright © 2014 Coraline Ada Ehmke <coraline@idolhands.com>
+Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+
+This Code of Conduct is adapted from the Contributor Covenant
+(http://contributor-covenant.org), version 1.3.0, available at
+http://contributor-covenant.org/version/1/3/0/
+
+It is released under the Creative Commons Attribution 4.0
+International Public License.  A copy of the license text is included
+in the file CC-BY-SA-4.0.txt.
+
+---
+
 Contributor Code of Conduct
 
   Note: In the sequel, "project" refers to Guile-Debbugs, and "project
@@ -45,7 +58,3 @@ All complaints will be reviewed and investigated and will
 result in a response that is deemed necessary and appropriate to the
 circumstances. Maintainers are obligated to maintain confidentiality
 with regard to the reporter of an incident.
-
-This Code of Conduct is adapted from the Contributor Covenant
-(http://contributor-covenant.org), version 1.3.0, available at
-http://contributor-covenant.org/version/1/3/0/
