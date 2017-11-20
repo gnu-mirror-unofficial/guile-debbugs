@@ -24,8 +24,7 @@
   #:use-module (ice-9 match)
   #:use-module (debbugs soap)
   #:use-module (debbugs rfc822)
-  #:export (email
-            email?
+  #:export (email?
             email-headers
             email-body
             email-msg-num
