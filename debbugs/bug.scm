@@ -24,8 +24,7 @@
   #:use-module (ice-9 match)
   #:use-module ((sxml xpath) #:hide (filter))
   #:use-module (debbugs soap)
-  #:export (bug
-            bug?
+  #:export (bug?
 
             bug-package bug-severity bug-num bug-subject bug-summary bug-msgid
             bug-originator bug-owner
