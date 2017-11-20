@@ -264,7 +264,141 @@ a string holding an email address.
 @section Bug helpers
 
 @cindex (debbugs bug), module
-TODO
+Being a bug tracker, Debbugs tracks bugs.  Bugs are created and modified
+through email messages, and Debbugs reveals the internal state that is
+affected by these messages through the @code{get-status} operation.  The
+Guile bindings parse the returned state to a value of the record type
+@code{<bug>}.
+
+@cindex soap-bug->bug, procedure
+@deffn {Scheme Procedure} soap-bug->bug @var{bug-item}
+This procedure takes an SXML expression @var{bug-item}, which describes
+the state of a single bug, and returns a record of type @code{<bug>}.
+It is used to parse the SOAP response of the @code{get-status}
+operation.  This is the only way to obtain a value of type @code{<bug>}.
+@end deffn
+
+@cindex bug accessor procedures
+@cindex bug properties
+Debbugs records a large number of properties for each bug.  For each of
+these properties Guile Debbugs provides an accessor procedure, which
+returns the parsed value.  In the table below the properties are
+described.  Each property can be accessed with a procedure named
+@code{bug-PROPERTY}, where @code{PROPERTY} is the property name.
+
+@table @code
+@cindex bug-package, accessor
+@item package
+The package to which this bug report applies.
+
+@cindex bug-severity, accessor
+@item severity
+The severity of the bug report.
+
+@cindex bug-num, accessor
+@item num
+The bug number, a unique numeric identifier.
+
+@cindex bug-subject, accessor
+@item subject
+The current title of the bug report.
+
+@cindex bug-summary, accessor
+@item summary
+An arbitrary summary text.
+
+@cindex bug-msgid, accessor
+@item msgid
+The message ID of the email that caused the bug to be registered.
+
+@cindex bug-originator, accessor
+@item originator
+The email address of the submitter of the bug report.
+
+@cindex bug-owner, accessor
+@item owner
+The email address of the person assigned to fix this bug.
+
+@cindex bug-done, accessor
+@item done
+The email address of the person who closed the bug.
+
+@cindex bug-archived, accessor
+@item archived
+A boolean indicating whether the bug is archived.
+
+@cindex bug-unarchived, accessor
+@item unarchived
+A boolean indicating whether the bug has been unarchived and can be
+archived again.
+
+@cindex bug-pending, accessor
+@item pending
+Either the string ``pending'' or the string ``done''.
+
+@cindex bug-blocks, accessor
+@item blocks
+A list of bug numbers for bugs that are blocked by this bug.
+
+@cindex bug-blockedby, accessor
+@item blockedby
+A list of bug numbers of bugs blocking this bug.
+
+@cindex bug-mergedwith, accessor
+@item mergedwith
+A list of bug numbers for bugs that have been merged with this bug.
+
+@cindex bug-affects, accessor
+@item affects
+A list of package names that are affected by this bug.
+
+@cindex bug-date, accessor
+@item date
+The date and time when this bug was reported.
+
+@cindex bug-log-modified, accessor
+@item log-modified
+The date and time when this bug was last modified.
+
+@cindex bug-last-modified, accessor
+@item last-modified
+Honestly, I don't know what the difference is compared to @code{log-modified}.
+
+@cindex bug-forwarded, accessor
+@item forwarded
+A URL or an email address.
+
+@cindex bug-fixed-versions, accessor
+@item fixed-versions
+A list of version strings for versions of the affected package in which
+the bug has been fixed.
+
+@cindex bug-found-versions, accessor
+@item found-versions
+A list of version strings for versions of the package in which the bug
+has been found.
+
+@cindex bug-source, accessor
+@item source
+Source package of the bug report.
+
+@cindex bug-outlook, accessor
+@item outlook
+Unknown.
+
+@cindex bug-tags, accessor
+@item tags
+A list of tag strings.
+
+@cindex bug-found, accessor
+@item found
+Apparantly this field is not fully implemented in Debbugs yet.
+
+@cindex bug-location, accessor
+@item location
+In the Debian version of Debbugs this will always be ``db-h'' or ``archive''.
+@end table
+
 
 @c *********************************************************************
 @node Email helpers
