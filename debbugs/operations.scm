@@ -23,7 +23,8 @@
   #:use-module (sxml xpath)
   #:use-module (sxml match)
   #:use-module (srfi srfi-1)
-  #:use-module (ice-9 match))
+  #:use-module (ice-9 match)
+  #:use-module (ice-9 optargs))
 
 (define-public (newest-bugs amount)
   "Return a list of bug numbers corresponding to the newest AMOUNT
@@ -118,3 +119,24 @@ all bugs that have been tagged by EMAIL."
                             (cdr pair))
                       pair)))
               tags)))))))
+
+;; This is not implemented in the Debian deployment of Debbugs.
+(define*-public (search-est phrase #:optional (skip 0) (max #f))
+  "Return the result of a full text search according to PHRASE.  When
+SKIP is provided the given number of hits will be skipped; this is
+useful for paged results.  At most MAX results are returned when MAX
+is provided.  The number of returned results is always limited by the
+absolute maximum returned by the Debbugs server."
+  (soap-request
+   `(ns1:search_est
+     (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
+        (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
+     (ns1:phrase
+      (@ (xsi:type "xsd:string")) ,phrase)
+     (ns1:skip
+      (@ (xsi:type "xsd:int")) ,skip)
+     ,@(if max `(ns1:max
+                 (@ (xsi:type "xsd:int")) ,max)
+           '()))
+   ;; TODO: implement response hander
+   ))

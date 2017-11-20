@@ -259,6 +259,19 @@ lists of bug numbers for all bugs that have been tagged by @var{email},
 a string holding an email address.
 @end deffn
 
+@cindex search-est, operation
+@deffn {Scheme Procedure} search-est @var{phrase} [@var{skip}] [@var{max}]
+Return the result of a full text search according to the string
+@var{phrase}.  When @var{skip} is provided, the given number of hits
+will be skipped; this is useful for paged results.  At most @var{max}
+results are returned when @var{max} is provided.  The number of returned
+results is always limited by the absolute maximum returned by the
+Debbugs server.
+
+This operation may not be supported by all Debbugs instances.
+@end deffn
+
+
 @c *********************************************************************
 @node Bug helpers
 @section Bug helpers
