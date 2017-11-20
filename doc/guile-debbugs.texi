@@ -291,6 +291,11 @@ It is used to parse the SOAP response of the @code{get-status}
 operation.  This is the only way to obtain a value of type @code{<bug>}.
 @end deffn
 
+@cindex bug?, predicate
+@deffn {Scheme Procedure} bug? @var{record}
+Return @code{#t} when @var{record} is a @code{<bug>} object.
+@end deffn
+
 @cindex bug accessor procedures
 @cindex bug properties
 Debbugs records a large number of properties for each bug.  For each of
