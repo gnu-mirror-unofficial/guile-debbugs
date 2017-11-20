@@ -55,6 +55,8 @@
   (make-email (parse-headers header) body msg-num attachments))
 
 (define (soap-email->email email-item)
+  "Convert an SXML expression representing an email item from a SOAP
+response to an <email> object."
   (let ((email-properties (map soap->scheme (cdr email-item))))
     (apply email
            (append-map (match-lambda
