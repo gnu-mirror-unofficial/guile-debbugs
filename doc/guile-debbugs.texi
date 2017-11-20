@@ -422,8 +422,60 @@ In the Debian version of Debbugs this will always be ``db-h'' or ``archive''.
 @node Email helpers
 @section Email helpers
 
+@cindex Email helpers
 @cindex (debbugs email), module
-TODO
+Debbugs is an email-driven bug tracker---bug reports are created by
+sending email and their state is updated by sending control messages.
+Every bug has an associated message log, an ordered list of user-sent
+emails and internal control messages.  The @code{(debbugs email)} module
+provides the record type @code{<email>} that represents those email
+messages.
+
+@cindex soap-email->email, procedure
+@deffn {Scheme Procedure} soap-email->email @var{email-item}
+This procedure takes an SXML expression @var{email-item}, which
+describes a single email with headers, body, message number, and
+attachments, and returns a record of type @code{<email>}.  It is used to
+parse the SOAP response of the @code{get-bug-log} operation.  This is
+the only way to obtain a value of type @code{<email>}.
+
+It parses the email headers to an association list of headers to values.
+It does not process other properties.
+@end table
+
+@cindex email?, predicate
+@deffn {Scheme Procedure} email? @var{record}
+Return @code{#t} when @var{record} is an object of type @code{<email>}.
+@end deffn
+
+@cindex bug accessor procedures
+@cindex bug properties
+An email consists of headers, a body, a message number, and an optional
+list of attachments.  This module provides accessor procedures to
+extract these values from a given object of type @code{<email>}.
+
+@cindex email-headers, accessor
+@deffn {Scheme Procedure} email-headers @var{email}
+Return the parsed RFC822 headers of the @var{email} as an association
+list.  The headers are parsed when the object is first created.
+@end deffn
+
+@cindex email-body, accessor
+@deffn {Scheme Procedure} email-body @var{email}
+Return the email's body as a string.
+@end deffn
+
+@cindex email-msg-num, accessor
+@deffn {Scheme Procedure} email-msg-num @var{email}
+Return the email's message number.  Emails in a bug log can be sorted
+using the message number.
+@end deffn
+
+@cindex email-attachments, accessor
+@deffn {Scheme Procedure} email-attachments @var{email}
+Return a list of attachments or the empty list if there are none.
+@end deffn
+
 
 @c *********************************************************************
 @node Acknowledgments
