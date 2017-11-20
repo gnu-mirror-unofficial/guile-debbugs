@@ -441,7 +441,7 @@ the only way to obtain a value of type @code{<email>}.
 
 It parses the email headers to an association list of headers to values.
 It does not process other properties.
-@end table
+@end deffn
 
 @cindex email?, predicate
 @deffn {Scheme Procedure} email? @var{record}
