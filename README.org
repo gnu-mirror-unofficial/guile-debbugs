@@ -4,9 +4,12 @@ and documentation.  (You will have to build it first.)
 
 * Missing features
 
-+ TLS support (required for GNU debbugs instance)
 + convenience procedures for =<bug>= records (e.g. =bug-done?=)
 + monadic interface
+
+* Known problems
+
++ Guile 2.2.2 has a bug in “(web client)”, which prevents HTTPS connections from being established.  This was fixed with commit =0c102b56e98da39b5a3213bdc567a31ad8ef3e73= but as of the time of this writing there has not been a release including the fix.
 
 * Hacking
 
