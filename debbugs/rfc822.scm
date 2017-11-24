@@ -1,5 +1,7 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
 ;;; Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2006 Reed Sheridan
+;;; Copyright © 2000-2004 Shiro Kawai
 ;;;
 ;;; This file is part of Guile-Debbugs.
 ;;;
