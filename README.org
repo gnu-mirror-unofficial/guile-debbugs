@@ -1,3 +1,9 @@
+Guile-Debbugs --- Guile bindings for Debbugs
+Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+See the end of the file for license conditions.
+
+* What is this?
+
 This is an attempt to provide Guile bindings for the debbugs bug
 tracker.  See the Info manual (=doc/guile-debbugs.info=) for examples
 and documentation.  (You will have to build it first.)
@@ -22,6 +28,17 @@ make
 
 * License
 
-Guile-Debbugs is released under the GNU General Public License version
-3 or, at your option, any later version.  You are welcome to using it
-in a web application under the Affero GPL version 3 or later.
+This file is part of Guile-Debbugs.
+
+Guile-Debbugs is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 3 of the
+License, or (at your option) any later version.
+
+Guile-Debbugs is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Guile-Debbugs.  If not, see <http://www.gnu.org/licenses/>.
