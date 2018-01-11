@@ -73,7 +73,7 @@ can do with this library:
 (set! %load-path (cons "/path/to/guile-debbugs/" %load-path))
 ,use (debbugs soap)
 ,use (debbugs operations)
-,use (debbugs bugs)
+,use (debbugs bug)
 ,use (debbugs email)
 (define %debian "http://bugs.debian.org/cgi-bin/soap.cgi")
 (define %gnu "https://debbugs.gnu.org/cgi/soap.cgi")
