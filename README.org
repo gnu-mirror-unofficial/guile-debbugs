@@ -1,5 +1,5 @@
 Guile-Debbugs --- Guile bindings for Debbugs
-Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
 See the end of the file for license conditions.
 
 * What is this?
@@ -20,7 +20,7 @@ and documentation.  (You will have to build it first.)
 * Hacking
 
 #+BEGIN_SRC bash
-guix environment --ad-hoc autoconf automake texinfo pkg-config guile@2.2
+guix environment --ad-hoc autoconf automake make texinfo pkg-config guile@2.2
 ./bootstrap.sh
 ./configure
 make
