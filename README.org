@@ -26,6 +26,8 @@ guix environment --ad-hoc autoconf automake make texinfo pkg-config guile@2.2
 make
 #+END_SRC
 
+In order to generate the ChangeLog from the git commit history during =make dist= you will need to have Perl.
+
 * License
 
 This file is part of Guile-Debbugs.
