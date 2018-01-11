@@ -488,6 +488,13 @@ bug reports or patches:
 @item Your Name Here @email{nobody@@yet}
 @end itemize
 
+Also thanks to the people who reviewed Guile Debbugs for hosting on
+Savannah and for joining the GNU project.
+
+@itemize @bullet
+@item Ineiev @email{ineiev@@gnu.org}
+@item Mike Gerwitz @email{mtg@@gnu.org}
+@end itemize
 
 Thank you.
 
