@@ -8,6 +8,10 @@ Copyright © 2018 Ricardo Wurmus <rekado@elephly.net>
   are permitted in any medium without royalty provided the copyright
   notice and this notice are preserved.
 
+* First release as part of GNU: 0.0.2
+
+On January 15, 2018 Guile Debbugs joined the GNU Project.
+
 * Initial release 0.0.1
 
 This is the first public release of Guile Debbugs.  Enjoy!

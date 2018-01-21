@@ -8,6 +8,8 @@ This is an attempt to provide Guile bindings for the debbugs bug
 tracker.  See the Info manual (=doc/guile-debbugs.info=) for examples
 and documentation.  (You will have to build it first.)
 
+Guile Debbugs is part of the [[https://www.gnu.org/][GNU project]].
+
 * Missing features
 
 + convenience procedures for =<bug>= records (e.g. =bug-done?=)
