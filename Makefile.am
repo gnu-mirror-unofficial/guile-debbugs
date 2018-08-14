@@ -64,8 +64,8 @@ info_TEXINFOS = doc/guile-debbugs.texi
 EXTRA_DIST +=								\
   doc/fdl-1.3.texi
 
-dist-hook: $(distdir)/ChangeLog
-gen-ChangeLog $(distdir)/ChangeLog:
+dist-hook: gen-ChangeLog
+gen-ChangeLog:
 	$(AM_V_GEN)if test -d .git; then				\
 	  $(top_srcdir)/build-aux/gitlog-to-changelog	\
 	    > $(distdir)/cl-t;							\
