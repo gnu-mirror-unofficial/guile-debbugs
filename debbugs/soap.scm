@@ -98,15 +98,16 @@ response body."
          (req-xml (call-with-output-string
                    (lambda (port)
                      (sxml->xml (soap-request-body request) port)))))
-    (receive (response body)
+    (receive (response body-port)
         (http-post uri
                    #:body req-xml
                    #:headers
                    `((content-type . (text/xml))
                      (content-length . ,(string-length req-xml)))
+                   #:streaming? #t
                    #:decode-body? #t)
       ((soap-request-callback request)
-       (xml->sxml body #:trim-whitespace? #t)))))
+       (xml->sxml body-port #:trim-whitespace? #t)))))
 
 (define (soap-invoke* . args)
   "Cache the return value of SOAP-INVOKE.  Return the cached value if
