@@ -23,9 +23,12 @@
   #:use-module (sxml simple)
   #:use-module (sxml xpath)
   #:use-module (web client)
+  #:use-module (web http)
   #:use-module (ice-9 match)
   #:use-module (ice-9 receive)
   #:use-module (ice-9 iconv)
+  #:use-module (ice-9 textual-ports)
+  #:use-module (rnrs bytevectors)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-9)
   #:use-module (srfi srfi-26)
@@ -88,6 +91,48 @@ and an optional CALLBACK procedure for handling a response."
         (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
      (soap:Body ,body))
    callback))
+
+;; XXX: this is necessary to avoid a "bad-header" error when
+;; receiving a Content-type header like this:
+;; Content-Type: multipart/related; type="text/xml"; start="<main_envelope>"; boundary="=-=-="
+
+;; Guile's original Content-type handler cannot deal with the boundary
+;; string containing "=", so we replace it.
+;; See Guile bug#32528.
+(declare-header! "Content-Type"
+  (lambda (str)
+    (let ((parts (string-split str #\;)))
+      (cons ((@@ (web http) parse-media-type) (car parts))
+            (map (lambda (x)
+                   (let ((eq (string-index x #\=)))
+                     (unless eq
+                       ((@@ (web http) bad-header) 'content-type str))
+                     (cons
+                      (string->symbol
+                       (string-trim x char-set:whitespace 0 eq))
+                      (string-trim-right x char-set:whitespace (1+ eq)))))
+                 (cdr parts)))))
+  (lambda (val)
+    (match val
+      (((? symbol?) ((? symbol?) . (? string?)) ...) #t)
+      (_ #f)))
+  (lambda (val port)
+    (match val
+      ((type . args)
+       ((@@ (web http) put-symbol) port type)
+       (match args
+         (() (values))
+         (args
+          (put-string port ";")
+          ((@@ (web http) put-list)
+           port args
+           (lambda (port pair)
+             (match pair
+               ((k . v)
+                ((@@ (web http) put-symbol) port k)
+                (put-char port #\=)
+                (put-string port v))))
+           ";")))))))
 
 (define (soap-invoke uri op . args)
   "Build a SOAP request from the SOAP operation OP and the arguments
