@@ -260,7 +260,7 @@ a string holding an email address.
 @end deffn
 
 @cindex search-est, operation
-@deffn {Scheme Procedure} search-est @var{phrase} [@var{skip}] [@var{max}]
+@deffn {Scheme Procedure} search-est @var{phrase} [@var{skip}] [@var{max}] [@var{attributes}]
 Return the result of a full text search according to the string
 @var{phrase}.  When @var{skip} is provided, the given number of hits
 will be skipped; this is useful for paged results.  At most @var{max}
@@ -268,7 +268,118 @@ results are returned when @var{max} is provided.  The number of returned
 results is always limited by the absolute maximum returned by the
 Debbugs server.
 
-This operation may not be supported by all Debbugs instances.
+The list of @var{attributes} can be used to limit the search.  Each
+attribute element is a list of three items: the attribute symbol, a
+value for that attribute, and an operator.  Here is an example of an
+attribute list that limits the search to the packages ``guix'' and
+``guix-patches'' by matching the ``package'' attribute exactly against
+one of the strings:
+
+@example
+'((package string-prefix "guix"))
+@end example
+
+Note that this operation may not be supported by all Debbugs instances.
+
+@cindex search attributes, search-est
+The following attributes are recognized:
+
+@table @code
+@item @@title
+The subject of a message.  Note that in spite of this attribute's name
+this is not necessarily the title of the bug.
+
+@item severity
+The bug severity, such as ``minor'', ``normal'', ``important'', or
+``serious''.
+
+@item submitter
+The name and email address of the bug submitter.
+
+@item @@author
+The message author.  (Not the submitter of the first bug message.)
+
+@item subject
+The bug title, not the message subject.  (I know that this is
+confusing.)
+
+@item status
+The bug status.  At least the GNU instance of Debbugs does not seem to
+record a bug status at all, so this will always be the empty string.
+
+@item @@cdate
+The message date.
+
+@item package
+The name of the package to which the bug applies, such as ``emacs'' or ``guix''.q
+
+@item tags
+Tags that have been added to a message, such as ``patch'' for messages
+containing patches.
+
+@item date
+The bug submission date.
+@end table
+
+
+@cindex numeric operators, search-est
+The following operators for numeric arguments are available:
+
+@table @code
+@item =
+Numeric equality.
+
+@item /=
+Numeric inequality.
+
+@item >
+The number must be greater than the given value.
+
+@item >=
+The number must be greater than or equal to the given value.
+
+@item <
+The number must be less than the given value.
+
+@item <=
+The number must be less than or equal to the given value.
+
+@item ><
+The number must be between the two numeric arguments.
+@end table
+
+
+@cindex string operators, search-est
+The following operators for string arguments are available:
+
+@table @code
+@item string=
+String equality.
+
+@item string-not-equal
+String inequality.
+
+@item string-contains
+The item must include the given string.
+
+@item string-prefix
+The item must begin with the given string.
+
+@item string-suffix
+The item must end with the given string.
+
+@item string-and
+The matched item includes all tokens.
+
+@item string-or
+The matched item includes at least one of the space-separated strings.
+
+@item string-or-equal
+The matched item is equal to at least one of the space-separated tokens.
+
+@item string-regex
+The item must match the provided regular expression.
+@end table
 @end deffn
 
 

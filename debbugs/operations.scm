@@ -1,5 +1,5 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
-;;; Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
 ;;;
 ;;; This file is part of Guile-Debbugs.
 ;;;
@@ -120,23 +120,93 @@ all bugs that have been tagged by EMAIL."
                       pair)))
               tags)))))))
 
+(define %allowed-attributes
+  '(@title severity submitter @author subject status @cdate package tags date))
+
+(define %number-operators
+  '((=  . NUMEQ)
+    (/= . NUMNE)
+    (>  . NUMGT)
+    (>= . NUMGE)
+    (<  . NUMLT)
+    (<= . NUMLE)
+    (>< . NUMBT)))
+
+;; We use case insensitive searches for all string operators except
+;; for string-regex.
+(define %string-operators
+  '((string=            . ISTREQ)
+    (string-not-equal   . ISTRNE)
+    (string-contains    . ISTRINC)
+    (string-prefix      . ISTRBW)
+    (string-suffix      . ISTREW)
+    (string-and         . ISTRAND)
+    (string-or          . ISTROR)
+    (string-or-equal    . ISTROREQ)
+    (string-regex       . STRRX)))
+
+(define (operator op)
+  "Translate readable search operators to attribute search conditions
+supported by the HyperEstraier search engine, which is used by
+debbugs.gnu.org."
+  (or (assoc-ref %string-operators op)
+      (assoc-ref %number-operators op)))
+
 ;; This is not implemented in the Debian deployment of Debbugs.
-(define*-public (search-est phrase #:optional (skip 0) (max #f))
+(define*-public (search-est phrase
+                            #:key (skip 0) (max 0) (attributes '()))
   "Return the result of a full text search according to PHRASE.  When
 SKIP is provided the given number of hits will be skipped; this is
 useful for paged results.  At most MAX results are returned when MAX
-is provided.  The number of returned results is always limited by the
-absolute maximum returned by the Debbugs server."
+is greater than zero.  The number of returned results is always
+limited by the absolute maximum returned by the Debbugs server.
+
+ATTRIBUTES is a list of lists containing the attribute, the value, and
+an operator."
   (soap-request
    `(ns1:search_est
      (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
+        (xmlns:types . "urn:Debbugs/SOAP/TYPES")
         (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
-     (ns1:phrase
-      (@ (xsi:type "xsd:string")) ,phrase)
-     (ns1:skip
-      (@ (xsi:type "xsd:int")) ,skip)
-     ,@(if max `(ns1:max
-                 (@ (xsi:type "xsd:int")) ,max)
-           '()))
-   ;; TODO: implement response hander
-   ))
+     (ns1:query
+      (@ (xsi:type "soapenc:Array")
+         (soapenc:arrayType "types:ArrayOfAnyType[]"))
+      ;; The primary query
+      (ns1:query
+       (@ (xsi:type "soapenc:Array")
+          (soapenc:arrayType "xsd:anyType[6]"))
+       ((ns1:query (@ (xsi:type "xsd:string")) "phrase")
+        (ns1:query (@ (xsi:type "xsd:string")) ,phrase)
+        (ns1:query (@ (xsi:type "xsd:string")) "max")
+        (ns1:query (@ (xsi:type "xsd:string")) ,(number->string max))
+        (ns1:query (@ (xsi:type "xsd:string")) "skip")
+        (ns1:query (@ (xsi:type "xsd:string")) ,(number->string skip))))
+      ;; Attribute filters.
+      ,@(map (match-lambda
+               ((attr op . values)
+                `((ns1:query
+                   (@ (xsi:type "soapenc:Array")
+                      (soapenc:arrayType "xsd:anyType[4]"))
+                   ((ns1:query (@ (xsi:type "xsd:string"))
+                               ,(symbol->string attr))
+                    (ns1:query (@ (xsi:type "xsd:string"))
+                               ,(match values
+                                  (((? string? s)) s)
+                                  (((? number? n)) (number->string n))
+                                  (((? number? a) (? number? b))
+                                   (string-append (number->string a)
+                                                  " "
+                                                  (number->string b)))))
+                    (ns1:query (@ (xsi:type "xsd:string")) "operator")
+                    (ns1:query (@ (xsi:type "xsd:string"))
+                               ,(operator op)))))))
+             attributes)))
+   (lambda (response-body)
+     (let ((items ((sxpath '(// urn:Debbugs/SOAP:search_estResponse
+                                http://schemas.xmlsoap.org/soap/encoding/:Array
+                                urn:Debbugs/SOAP:item)) response-body)))
+       ;; Flatten to list of alists
+       (map (lambda (item)
+              (match (soap->scheme item)
+                (('item (pair) ...) pair)))
+            items)))))
