@@ -1,5 +1,5 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
-;;; Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
 ;;;
 ;;; This file is part of Guile-Debbugs.
 ;;;
@@ -20,7 +20,8 @@
   #:export (config))
 
 (define %config
-  `((debug . #f)))
+  `((debug . #f)
+    (cache-ttl . 240)))
 
 (define (config key)
   (assoc-ref %config key))

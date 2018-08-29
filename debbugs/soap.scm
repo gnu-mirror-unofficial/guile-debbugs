@@ -1,5 +1,5 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
-;;; Copyright © 2017 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
 ;;;
 ;;; This file is part of Guile-Debbugs.
 ;;;
@@ -18,6 +18,8 @@
 
 (define-module (debbugs soap)
   #:use-module (debbugs base64)
+  #:use-module (debbugs config)
+  #:use-module (debbugs cache)
   #:use-module (sxml simple)
   #:use-module (sxml xpath)
   #:use-module (web client)
@@ -33,6 +35,7 @@
             soap-request-callback
 
             soap-invoke
+            soap-invoke*
             soap->scheme))
 
 ;; (define (parse-wsdl file)
@@ -104,6 +107,12 @@ response body."
                    #:decode-body? #t)
       ((soap-request-callback request)
        (xml->sxml body #:trim-whitespace? #t)))))
+
+(define (soap-invoke* . args)
+  "Cache the return value of SOAP-INVOKE.  Return the cached value if
+it is still fresh."
+  (or (cached? args)
+      (cache! args (apply soap-invoke args))))
 
 (define* (soap->scheme sxml #:optional (plain #f))
   "Convert a SOAP sxml expression for a named value to a Scheme value.
