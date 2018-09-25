@@ -27,23 +27,20 @@
   #:export (email?
             email-headers
             email-body
-            email-msg-num
             email-attachments
 
             soap-email->email))
 
 (define-record-type <email>
-  (make-email headers body msg-num attachments)
+  (make-email headers body attachments)
   email?
   (headers      email-headers)
   (body         email-body)
-  (msg-num      email-msg-num)
   (attachments  email-attachments))
 
 (set-record-type-printer! <email>
   (lambda (record port)
-    (simple-format port "#<email ~s ~a>"
-                   (email-msg-num record)
+    (simple-format port "#<email ~a>"
                    (number->string (object-address record) 16))))
 
 (define (parse-headers header-text)
@@ -52,7 +49,7 @@
     (lambda () (rfc822-header->list (current-input-port)))))
 
 (define* (email #:key header body msg-num (attachments '()))
-  (make-email (parse-headers header) body msg-num attachments))
+  (make-email (parse-headers header) body attachments))
 
 (define (soap-email->email email-item)
   "Convert an SXML expression representing an email item from a SOAP
