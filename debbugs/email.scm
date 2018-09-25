@@ -49,7 +49,14 @@
     (lambda () (rfc822-header->list (current-input-port)))))
 
 (define* (email #:key header body msg-num (attachments '()))
-  (make-email (parse-headers header) body attachments))
+  (define (drop-lines str k)
+    (if (zero? k)
+        str
+        (drop-lines (substring str (1+ (string-index str #\newline)))
+                    (1- k))))
+
+  (make-email (parse-headers (drop-lines header 2))
+              body attachments))
 
 (define (soap-email->email email-item)
   "Convert an SXML expression representing an email item from a SOAP
