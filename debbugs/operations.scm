@@ -1,5 +1,6 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
 ;;; Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2018 Arun Isaac <arunisaac@systemreboot.net>
 ;;;
 ;;; This file is part of Guile-Debbugs.
 ;;;
@@ -19,12 +20,43 @@
 (define-module (debbugs operations)
   #:use-module (debbugs soap)
   #:use-module (debbugs bug)
-  #:use-module (debbugs email)
+  #:use-module (email email)
   #:use-module (sxml xpath)
   #:use-module (sxml match)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 match)
   #:use-module (ice-9 optargs))
+
+(define (soap-email->email email-item)
+  "Convert an SXML expression representing an email item from a SOAP
+response to an <email> object."
+  (define (drop-lines str k)
+    (if (zero? k)
+        str
+        (drop-lines (substring str (1+ (string-index str #\newline)))
+                    (1- k))))
+
+  (let ((email-properties (map soap->scheme (cdr email-item))))
+    (let* ((headers (parse-email-headers
+                     (drop-lines (assoc-ref email-properties 'header) 2)))
+           (content-type (assoc-ref headers 'content-type))
+           (body (assoc-ref email-properties 'body)))
+      (case (assoc-ref content-type 'type)
+        ((multipart)
+         (let ((boundary (assoc-ref content-type 'boundary)))
+           (make-email
+            headers
+            ;; Sometimes the debbugs SOAP API provides only the first
+            ;; MIME entity of a multipart message. This is a bug, and
+            ;; the following works around it until it can be fixed in
+            ;; the debbugs SOAP service.
+            (if (string-contains body (string-append "--" boundary))
+                (parse-email-body headers body)
+                (list (make-mime-entity
+                       `(content-type (type . text)
+                                      (subtype . plain))
+                       body))))))
+        (else (make-email headers body))))))
 
 (define-public (newest-bugs amount)
   "Return a list of bug numbers corresponding to the newest AMOUNT
