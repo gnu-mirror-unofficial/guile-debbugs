@@ -29,6 +29,11 @@ if test "x$GUILD" = "x"; then
    AC_MSG_ERROR(['guild' binary not found; please check your guile-2.2 installation.])
 fi
 
+GUILE_MODULE_AVAILABLE([have_guile_email], [(email email)])
+if test "x$have_guile_email" != "xyes"; then
+  AC_MSG_ERROR([guile-email is missing; please install it.])
+fi
+
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([env], [chmod +x env])
 AC_OUTPUT
