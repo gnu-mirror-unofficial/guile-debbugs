@@ -169,7 +169,15 @@ name and the value."
   (let* ((converter (match ((sxpath '(@ http://www.w3.org/1999/XMLSchema-instance:type *text*)) sxml)
                       (("xsd:string") identity)
                       (("xsd:base64Binary")
-                       (compose (cut bytevector->string <> "UTF-8") base64-decode))
+                       ;; Debbugs does not tell us what encoding is
+                       ;; used for the body, so we first try UTF-8 and
+                       ;; fall back to ISO 8859-1 if decoding failed.
+                       (compose
+                        (lambda (decoded)
+                          (catch 'decoding-error
+                            (lambda () (bytevector->string decoded "UTF-8"))
+                            (lambda _  (bytevector->string decoded "ISO 8859-1"))))
+                        base64-decode))
                       (("xsd:int") string->number)
                       (("soapenc:Array") (cut soap->scheme <> #t))
                       (("apachens:Map")
