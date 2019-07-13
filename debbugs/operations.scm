@@ -1,5 +1,5 @@
 ;;; Guile-Debbugs --- Guile bindings for Debbugs
-;;; Copyright © 2017, 2018 Ricardo Wurmus <rekado@elephly.net>
+;;; Copyright © 2017, 2018, 2019 Ricardo Wurmus <rekado@elephly.net>
 ;;; Copyright © 2018 Arun Isaac <arunisaac@systemreboot.net>
 ;;;
 ;;; This file is part of Guile-Debbugs.
@@ -25,7 +25,16 @@
   #:use-module (sxml match)
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 match)
-  #:use-module (ice-9 optargs))
+  #:use-module (ice-9 optargs)
+  #:use-module (ice-9 binary-ports)
+  #:use-module (web client)
+  #:export
+  (newest-bugs
+   get-status
+   get-bugs
+   get-bug-log
+   get-usertag
+   search-est))
 
 (define (soap-email->email email-item)
   "Convert an SXML expression representing an email item from a SOAP
@@ -58,7 +67,7 @@ response to an <email> object."
                        body))))))
         (else (make-email headers body))))))
 
-(define-public (newest-bugs amount)
+(define (newest-bugs amount)
   "Return a list of bug numbers corresponding to the newest AMOUNT
 bugs."
   (soap-request
@@ -69,7 +78,7 @@ bugs."
    (lambda (response-body)
      (map string->number ((sxpath '(// urn:Debbugs/SOAP:item *text*)) response-body)))))
 
-(define-public (get-status bug-ids)
+(define (get-status bug-ids)
   "Return <bug> records containing the details for the bugs identified
 by BUG-IDS, a list of bug numbers."
   (soap-request
@@ -88,7 +97,7 @@ by BUG-IDS, a list of bug numbers."
                                urn:Debbugs/SOAP:item)) response-body)))
        (map soap-bug->bug bugs)))))
 
-(define-public (get-bugs args)
+(define (get-bugs args)
   "Returns bug numbers for bugs that match the conditions given by
 ARGS, an alist of key-value pairs.  Possible keys: package, submitter,
 maint, src, severity, status (which can be 'done', 'forwarded',
@@ -109,7 +118,7 @@ Boolean value)."
    (lambda (response-body)
      (map string->number ((sxpath '(// urn:Debbugs/SOAP:item *text*)) response-body)))))
 
-(define-public (get-bug-log bug-id)
+(define (get-bug-log bug-id)
   "Return emails associated with the bug identified by BUG-ID."
   (soap-request
    `(ns1:get_bug_log
@@ -123,7 +132,7 @@ Boolean value)."
                                  urn:Debbugs/SOAP:item)) response-body)))
        (map soap-email->email emails)))))
 
-(define-public (get-usertag email)
+(define (get-usertag email)
   "Return an association list of tag names to lists of bug numbers for
 all bugs that have been tagged by EMAIL."
   (soap-request
@@ -185,8 +194,8 @@ debbugs.gnu.org."
       (assoc-ref %number-operators op)))
 
 ;; This is not implemented in the Debian deployment of Debbugs.
-(define*-public (search-est phrase
-                            #:key (skip 0) (max 0) (attributes '()))
+(define* (search-est phrase
+                     #:key (skip 0) (max 0) (attributes '()))
   "Return the result of a full text search according to PHRASE.  When
 SKIP is provided the given number of hits will be skipped; this is
 useful for paged results.  At most MAX results are returned when MAX
