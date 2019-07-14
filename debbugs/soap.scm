@@ -134,15 +134,17 @@ and an optional CALLBACK procedure for handling a response."
                 (put-string port v))))
            ";")))))))
 
-(define (soap-invoke uri op . args)
+(define (soap-invoke instance op . args)
   "Build a SOAP request from the SOAP operation OP and the arguments
-ARGS, and send the request to the SOAP service at the specified URI.
-Process the response with the request's callback or return the SXML
-response body."
-  (let* ((request (apply op args))
+ARGS, and send the request to the SOAP service of the specified
+INSTANCE.  Process the response with the request's callback or return
+the SXML response body."
+  (let* ((uri (if (string? instance) instance
+                  (instance 'soap)))
+         (request (apply op args))
          (req-xml (call-with-output-string
-                   (lambda (port)
-                     (sxml->xml (soap-request-body request) port)))))
+                    (lambda (port)
+                      (sxml->xml (soap-request-body request) port)))))
     (receive (response body-port)
         (http-post uri
                    #:body req-xml
