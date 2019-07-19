@@ -34,7 +34,9 @@
    get-bugs
    get-bug-log
    get-usertag
-   search-est))
+   search-est
+
+   fetch-mbox))
 
 (define (soap-email->email email-item)
   "Convert an SXML expression representing an email item from a SOAP
@@ -251,3 +253,42 @@ an operator."
               (match (soap->scheme item)
                 (('item (pair) ...) pair)))
             items)))))
+
+;; This is not a normal operation.  Call it directly, not via
+;; soap-invoke.
+(define* (fetch-mbox instance bug-number #:optional msg-num mbox-type
+                     #:key streaming?)
+  "Download the mbox containing messages of bug BUG-NUMBER from the
+Debbugs server INSTANCE (a procedure returning a string when given the
+symbol 'email).  If MSG-NUM is not provided, all emails relating to
+this BUG-NUMBER are fetched."
+  (let* ((options
+          `((bug . ,(number->string bug-number))
+            ,@(cond
+               ((member mbox-type '(mboxmaint mboxstat mboxstatus))
+                `((mbox-type . "yes")))
+               (else '()))
+            ,@(if msg-num
+                  `((msg . ,msg-num))
+                  '())
+            (mbox . "yes")))
+         (uri (string-append (instance 'email) "?"
+                             (string-join (map (match-lambda
+                                                 ((key . value)
+                                                  (format #f "~a=~a" key value)))
+                                               options)
+                                          ";"))))
+    (if streaming?
+        (http-get uri #:streaming? #t)
+        (call-with-values
+            (lambda () (http-get uri #:streaming? #t))
+          (lambda (response port)
+            (with-input-from-port port
+              (lambda ()
+                (let loop ((bv (get-bytevector-some (current-input-port))))
+                  (match bv
+                    ((? eof-object?) #t)
+                    (bv
+                     (put-bytevector (current-output-port) bv)
+                     (loop (get-bytevector-some (current-input-port))))))))
+            response)))))
