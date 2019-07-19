@@ -10,7 +10,7 @@
 @include version.texi
 
 @copying
-Copyright @copyright{} 2017 Ricardo Wurmus@*
+Copyright @copyright{} 2017, 2018, 2019 Ricardo Wurmus@*
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -70,13 +70,8 @@ can do with this library:
 
 @cindex example, REPL session
 @lisp
-(set! %load-path (cons "/path/to/guile-debbugs/" %load-path))
-,use (debbugs soap)
-,use (debbugs operations)
-,use (debbugs bug)
-,use (debbugs email)
-(define %debian "http://bugs.debian.org/cgi-bin/soap.cgi")
-(define %gnu "https://debbugs.gnu.org/cgi/soap.cgi")
+,use (debbugs)
+,use (email email)
 (soap-invoke %debian newest-bugs 3)
 $1 = (880882 880881 880880)
 (soap-invoke %debian get-status $1)
