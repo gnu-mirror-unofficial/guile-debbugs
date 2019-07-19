@@ -33,6 +33,7 @@
    get-status
    get-bugs
    get-bug-log
+   get-bug-message-numbers
    get-usertag
    search-est
 
@@ -133,6 +134,24 @@ Boolean value)."
                                  http://schemas.xmlsoap.org/soap/encoding/:Array
                                  urn:Debbugs/SOAP:item)) response-body)))
        (map soap-email->email emails)))))
+
+;; This is not an official operation.  It's just really useful in
+;; combination with fetch-mbox.
+(define (get-bug-message-numbers bug-id)
+  "Return email message numbers associated with the bug identified by BUG-ID."
+  (soap-request
+   `(ns1:get_bug_log
+     (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
+        (soapenc:encodingStyle . "http://schemas.xmlsoap.org/soap/encoding/"))
+     (ns1:bugnumber
+      (@ (xsi:type "xsd:int")) ,bug-id))
+   (lambda (response-body)
+     (let ((msg-nums ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
+                                 http://schemas.xmlsoap.org/soap/encoding/:Array
+                                 urn:Debbugs/SOAP:item
+                                 urn:Debbugs/SOAP:msg_num
+                                 *text*)) response-body)))
+       (map string->number msg-nums)))))
 
 (define (get-usertag email)
   "Return an association list of tag names to lists of bug numbers for
