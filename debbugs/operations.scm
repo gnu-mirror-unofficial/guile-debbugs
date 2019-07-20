@@ -24,6 +24,7 @@
   #:use-module (sxml xpath)
   #:use-module (sxml match)
   #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-26)
   #:use-module (ice-9 match)
   #:use-module (ice-9 optargs)
   #:use-module (ice-9 binary-ports)
@@ -138,7 +139,8 @@ Boolean value)."
 ;; This is not an official operation.  It's just really useful in
 ;; combination with fetch-mbox.
 (define (get-bug-message-numbers bug-id)
-  "Return email message numbers associated with the bug identified by BUG-ID."
+  "Return email message numbers and message ids associated with the
+bug identified by BUG-ID."
   (soap-request
    `(ns1:get_bug_log
      (@ (xmlns:ns1 . "urn:Debbugs/SOAP")
@@ -146,12 +148,28 @@ Boolean value)."
      (ns1:bugnumber
       (@ (xsi:type "xsd:int")) ,bug-id))
    (lambda (response-body)
-     (let ((msg-nums ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
-                                 http://schemas.xmlsoap.org/soap/encoding/:Array
-                                 urn:Debbugs/SOAP:item
-                                 urn:Debbugs/SOAP:msg_num
-                                 *text*)) response-body)))
-       (map string->number msg-nums)))))
+     (define (drop-lines str k)
+       (if (zero? k)
+           str
+           (drop-lines (substring str (1+ (string-index str #\newline)))
+                       (1- k))))
+     (let ((msg-nums
+            ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
+                          http://schemas.xmlsoap.org/soap/encoding/:Array
+                          urn:Debbugs/SOAP:item
+                          urn:Debbugs/SOAP:msg_num
+                          *text*)) response-body))
+           (headers
+            ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
+                          http://schemas.xmlsoap.org/soap/encoding/:Array
+                          urn:Debbugs/SOAP:item
+                          urn:Debbugs/SOAP:header
+                          *text*)) response-body)))
+       (values (map string->number msg-nums)
+               (map (lambda (header)
+                      (and=> (parse-email-headers (drop-lines header 2))
+                             (cut assoc-ref <> 'message-id)))
+                    headers))))))
 
 (define (get-usertag email)
   "Return an association list of tag names to lists of bug numbers for
