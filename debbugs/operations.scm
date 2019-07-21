@@ -165,11 +165,11 @@ bug identified by BUG-ID."
                           urn:Debbugs/SOAP:item
                           urn:Debbugs/SOAP:header
                           *text*)) response-body)))
-       (values (map string->number msg-nums)
-               (map (lambda (header)
-                      (and=> (parse-email-headers (drop-lines header 2))
-                             (cut assoc-ref <> 'message-id)))
-                    headers))))))
+       (cons (map string->number msg-nums)
+             (map (lambda (header)
+                    (and=> (parse-email-headers (drop-lines header 2))
+                           (cut assoc-ref <> 'message-id)))
+                  headers))))))
 
 (define (get-usertag email)
   "Return an association list of tag names to lists of bug numbers for
