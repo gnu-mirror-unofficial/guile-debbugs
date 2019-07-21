@@ -151,8 +151,11 @@ bug identified by BUG-ID."
      (define (drop-lines str k)
        (if (zero? k)
            str
-           (drop-lines (substring str (1+ (string-index str #\newline)))
-                       (1- k))))
+           (or (and=> (string-index str #\newline)
+                      (lambda (index)
+                        (drop-lines (substring str (1+ index))
+                                    (1- k))))
+               str)))
      (let ((msg-nums
             ((sxpath '(// urn:Debbugs/SOAP:get_bug_logResponse
                           http://schemas.xmlsoap.org/soap/encoding/:Array
