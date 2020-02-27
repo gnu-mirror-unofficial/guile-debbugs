@@ -2,11 +2,35 @@
 #+TITLE: Guile Debbugs NEWS – history of user-visible changes
 #+STARTUP: content hidestars
 
-Copyright © 2018 Ricardo Wurmus <rekado@elephly.net>
+Copyright © 2018, 2019 Ricardo Wurmus <rekado@elephly.net>
 
   Copying and distribution of this file, with or without modification,
   are permitted in any medium without royalty provided the copyright
   notice and this notice are preserved.
+
+* Changes in 0.0.3 (since 0.0.2)
+
+The =search-est= operation now supports attribute filtering.
+
+The operation =get-bug-message-numbers= has been added.
+
+The procedure =fetch-mbox= has been added to =(debbugs operations)=.
+
+The procedure =soap-invoke*= has been added, which calls =soap-invoke=
+and caches the results.
+
+The =(debbugs soap)= module overrides Guile’s default handler for
+Content-Type headers to avoid errors when processing multipart
+messages with boundary strings containing “=”.
+
+The =soap-invoke= procedure now accepts a procedure returning the usable Debbugs endpoint URLs in addition to a plain service URL string as previously.
+
+The =(debbugs)= module provides the =%debian= and =%gnu= variables for
+the two major Debbugs instances out there.  They can be used as the
+first argument to =soap-invoke=.  The module also re-exports all
+public definitions of the =bug=, =operations=, and =soap= modules.
+
+Use guile-email instead of poorly parsing emails on our own.
 
 * First release as part of GNU: 0.0.2
 
