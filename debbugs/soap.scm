@@ -154,7 +154,13 @@ the SXML response body."
                    #:streaming? #t
                    #:decode-body? #t)
       ((soap-request-callback request)
-       (xml->sxml body-port #:trim-whitespace? #t)))))
+       (dynamic-wind
+         (const #f)
+         (lambda ()
+           (xml->sxml body-port #:trim-whitespace? #t))
+         (lambda ()
+           (unless (port-closed? body-port)
+             (close-port body-port))))))))
 
 (define (soap-invoke* . args)
   "Cache the return value of SOAP-INVOKE.  Return the cached value if
