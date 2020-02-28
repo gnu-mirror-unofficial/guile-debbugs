@@ -29,7 +29,7 @@
 ;; Ricardo Wurmus <rekado@elephly.net>, 2017 copied the code from Guix
 ;; and renamed it to (debbugs base64).
 ;;
-;; This file incorporates work covered by the following copyright and  
+;; This file incorporates work covered by the following copyright and
 ;; permission notice:
 ;;
 ;;   Copyright © 2009, 2010 Göran Weinholt <goran@weinholt.se>
@@ -151,7 +151,7 @@
 
   ;; Decodes a base64 string. The string must contain only pure
   ;; unpadded base64 data.
-  
+
 (define base64-decode
   (case-lambda
     ((str)
@@ -210,7 +210,7 @@
   ;; the given port. Returns two values: a string with the type and a
   ;; bytevector containing the base64 decoded data. The second value
   ;; is the eof object if there is an eof before the BEGIN delimiter.
-  
+
 (define (get-delimited-base64 port)
   (define (get-first-data-line port)
     ;; Some MIME data has header fields in the same format as mail

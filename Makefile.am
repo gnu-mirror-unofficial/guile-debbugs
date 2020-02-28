@@ -27,8 +27,8 @@ SOURCES =									\
   debbugs/bug.scm							\
   debbugs/cache.scm							\
   debbugs/config.scm						\
-  debbugs/operations.scm 					\
-  debbugs/rfc822.scm	 					\
+  debbugs/operations.scm					\
+  debbugs/rfc822.scm						\
   debbugs/soap.scm
 
 TEST_EXTENSIONS = .scm
