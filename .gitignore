@@ -13,3 +13,6 @@ test-suite.log
 *.info
 .dirstamp
 stamp-vti
+/GNUmakefile
+/README-release
+/maint.mk
