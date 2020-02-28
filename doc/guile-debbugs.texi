@@ -84,7 +84,7 @@ $4 = (#<email 1 ...> #<email 2 ...> #<email 3 ...>)
 $5 = "Hello world! ..."
 @end lisp
 
-For documentation of the supported operations @xref{Operations}.
+@xref{Operations} for documentation of the supported operations.
 
 
 @c *********************************************************************
